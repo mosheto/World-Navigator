@@ -1,0 +1,76 @@
+{
+  "rooms": [
+    {
+      "sides" : {
+        "NORTH" : {
+          "@type": "seller",
+          "items": {
+            "flashlight": {
+              "@type": "flashlight"
+            },
+            "blue key": {
+              "@type": "key",
+              "color": "blue"
+            },
+            "brown key": {
+              "@type": "key",
+              "color": "brown"
+            }
+          },
+          "prices": {
+            "flashlight": 20,
+            "blue key": 120,
+            "brown key": 200
+          }
+        },
+        "EAST" : {
+          "@type" : "door",
+          "key" : {
+            "@type" : "key",
+            "color" : "blue"
+          },
+          "nextRoom" : 1,
+          "isOpen" : false,
+          "isUnlocked": true
+        },
+        "SOUTH" : {
+          "@type" : "wall"
+        },
+        "WEST" : {
+          "@type" : "wall"
+        }
+      },
+      "lit" : true,
+      "hasLights": true
+    },
+    {
+      "sides": {
+        "NORTH": {
+          "@type": "wall"
+        },
+        "EAST": {
+          "@type": "door",
+          "key": null,
+          "nextRoom": -1,
+          "isOpen": false,
+          "isUnlocked": true
+        },
+        "SOUTH": {
+          "@type": "wall"
+        },
+        "WEST": {
+          "@type": "door",
+          "key": {
+            "@type": "key",
+            "color": "blue"
+          },
+          "nextRoom": 0,
+          "isOpen": false,
+          "isUnlocked": true
+        }
+      },
+      "lit": false,
+      "hasLights": true
+    }
+  ]
+}
