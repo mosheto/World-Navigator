@@ -1,6 +1,6 @@
 package com.worldnavigator;
 
-import com.worldnavigator.commands.globalshell.GlobalShell;
+import com.worldnavigator.commands.global.GlobalShell;
 
 import java.io.IOException;
 import java.nio.file.Paths;

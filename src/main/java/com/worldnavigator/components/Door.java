@@ -15,22 +15,12 @@ public class Door extends RoomSide implements Openable {
 
     private int nextRoom;
 
-//    @JsonCreator
-//    public Door(
-//            @JsonProperty("nextRoom") int nextRoom
-//    ) {
-//        this.key = null;
-//        this.isOpen = false;
-//        this.isUnlocked = false;
-//        this.nextRoom = nextRoom;
-//    }
-
     @JsonCreator
     public Door(
             @JsonProperty("key") Key key,
             @JsonProperty("nextRoom") int nextRoom,
-            @JsonProperty("isOpen") boolean isOpen,
-            @JsonProperty("isUnlocked") boolean isUnlocked
+            @JsonProperty("open") boolean isOpen,
+            @JsonProperty("unlocked") boolean isUnlocked
     ) {
         this.key = key;
         this.isOpen = isOpen;
@@ -39,9 +29,8 @@ public class Door extends RoomSide implements Openable {
     }
 
     @Override
-    public void unlock(Item key) {
-        if(Objects.equals(this.key, key))
-            isUnlocked = true;
+    public void accept(RoomSideVisitor visitor) {
+        visitor.execute(this);
     }
 
     @Override
@@ -51,13 +40,32 @@ public class Door extends RoomSide implements Openable {
     }
 
     @Override
+    public boolean lock(Item key) {
+        if(Objects.equals(this.key, key)) {
+            isOpen = false;
+            isUnlocked = false;
+        }
+
+        return !isUnlocked;
+    }
+
+    @Override
+    public boolean unlock(Item key) {
+        if(Objects.equals(this.key, key))
+            isUnlocked = true;
+
+        return isUnlocked;
+    }
+
+
+    @Override
     @JsonGetter("open")
     public boolean isOpen() {
         return isOpen;
     }
 
     @Override
-    @JsonGetter("isUnlocked")
+    @JsonGetter("unlocked")
     public boolean isUnlocked() {
         return isUnlocked;
     }

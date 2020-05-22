@@ -3,15 +3,20 @@ package com.worldnavigator.components;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.worldnavigator.components.items.Item;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 public class Player {
     // Possessions
     private int gold;
+
     private Map<String, Item> items;
 
     // Location
@@ -42,6 +47,15 @@ public class Player {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    /**
+     *
+     * @param item To be added to the player items
+     * @return if the item wasn't with player.
+     */
+    public boolean addItem(Item item) {
+        return items.putIfAbsent(item.toString(), item) == null;
     }
 
     @JsonGetter("gold")

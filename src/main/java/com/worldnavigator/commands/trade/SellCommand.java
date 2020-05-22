@@ -1,12 +1,19 @@
-package com.worldnavigator.commands.tradeshell;
+package com.worldnavigator.commands.trade;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.components.Maze;
 import com.worldnavigator.components.Player;
 import com.worldnavigator.components.Seller;
 
 public class SellCommand implements Command {
+
+    private final Output output;
+
+    public SellCommand(Output output) {
+        this.output = output;
+    }
 
     @Override
     public void execute(String... args) {
@@ -27,13 +34,12 @@ public class SellCommand implements Command {
                 player.getItems().remove(item);
 
             } else {
-                System.out.println("The seller doesn't have this item on it's price list.");
+                output.println(String.format("The seller doesn't have a %s on it's prices list.", item));
             }
 
         } else {
-            System.out.println("You don't have this item.");
+            output.println("You don't have this item.");
         }
-
     }
 
     @Override

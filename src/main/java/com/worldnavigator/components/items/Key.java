@@ -14,6 +14,11 @@ public class Key extends Item {
     }
 
     @Override
+    public void accept(ItemVisitor visitor) {
+        visitor.execute(this);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -26,6 +31,12 @@ public class Key extends Item {
         return Objects.hash(color);
     }
 
+    /**
+     * The string format that this method returns is
+     * "color key" where color is substituted by the key color.
+     *
+     * @return string representation of the key.
+     */
     @Override
     public String toString() {
         return color + " key";

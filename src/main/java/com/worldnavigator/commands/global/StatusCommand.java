@@ -1,22 +1,28 @@
-package com.worldnavigator.commands.globalshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
-import com.worldnavigator.components.items.Item;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.components.Player;
 
 public class StatusCommand implements Command {
+
+    private final Output output;
+
+    public StatusCommand(Output output) {
+        this.output = output;
+    }
 
     @Override
     public void execute(String ...args) {
         Player player = GameState.getState().getPlayer();
 
-        System.out.println("Gold: " + player.getGold());
-        System.out.println("Direction: " + player.getDirection());
+        output.println("Gold: " + player.getGold());
+        output.println("Direction: " + player.getDirection());
 
-        System.out.println("Items:");
+        output.println("Items:");
         for(String item : player.getItems().keySet())
-            System.out.println("\t" + item);
+            output.println(String.format("\t%s", item));
     }
 
     @Override

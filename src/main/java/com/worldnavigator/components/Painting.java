@@ -22,6 +22,11 @@ public class Painting extends RoomSide implements Stash {
     }
 
     @Override
+    public void accept(RoomSideVisitor visitor) {
+        visitor.execute(this);
+    }
+
+    @Override
     public List<Item> collect() {
         isCollected = true;
         return items;

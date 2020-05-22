@@ -11,4 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value = Key.class, name = "key"),
         @JsonSubTypes.Type(value = Flashlight.class, name = "flashlight")
 })
-public abstract class Item {}
+public abstract class Item {
+
+    public abstract void accept(ItemVisitor visitor);
+}

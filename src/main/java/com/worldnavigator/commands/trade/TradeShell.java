@@ -1,19 +1,29 @@
-package com.worldnavigator.commands.tradeshell;
+package com.worldnavigator.commands.trade;
 
 import com.worldnavigator.GameState;
+import com.worldnavigator.commands.Input;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.commands.Shell;
 import com.worldnavigator.components.Maze;
 import com.worldnavigator.components.Player;
 import com.worldnavigator.components.RoomSide;
 import com.worldnavigator.components.Seller;
 
-public class TradeShell extends Shell {
+import java.util.HashMap;
 
-    public TradeShell() {
-        super("trade");
-        addCommand("buy", new BuyCommand());
-        addCommand("sell", new SellCommand());
-        addCommand("list", new ListCommand());
+public final class TradeShell extends Shell {
+
+    public TradeShell(Input input, Output output) {
+        super(
+                input,
+                output,
+                "trade",
+                new HashMap<>()
+        );
+
+        addCommand("buy", new BuyCommand(output));
+        addCommand("sell", new SellCommand(output));
+        addCommand("list", new ListCommand(output));
     }
 
     @Override
@@ -29,7 +39,7 @@ public class TradeShell extends Shell {
         if(side instanceof Seller) {
             super.execute(args);
         } else {
-            System.out.println("You must be facing a seller to enter trade mode.");
+            output.println("You must be facing a seller to enter trade mode.");
         }
     }
 

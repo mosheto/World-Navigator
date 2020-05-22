@@ -14,4 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value = Painting.class, name = "painting"),
         @JsonSubTypes.Type(value = Seller.class, name = "seller")
 })
-public abstract class RoomSide {}
+public abstract class RoomSide {
+
+    public abstract void accept(RoomSideVisitor visitor);
+}

@@ -37,15 +37,38 @@ public class Chest extends RoomSide implements Openable, Stash {
     }
 
     @Override
+    public void accept(RoomSideVisitor visitor) {
+        visitor.execute(this);
+    }
+
+    @Override
     public void open() {
         if(isUnlocked())
             isOpen = true;
     }
 
     @Override
-    public void unlock(Item key) {
+    public boolean lock(Item key) {
+        if(Objects.equals(this.key, key)) {
+            isOpen = false;
+            isUnlocked = false;
+        }
+
+        return !isUnlocked;
+    }
+
+    @Override
+    public boolean unlock(Item key) {
         if(Objects.equals(this.key, key))
             isUnlocked = true;
+
+        return isUnlocked;
+    }
+
+    @Override
+    @JsonGetter("key")
+    public Item getKey() {
+        return key;
     }
 
     @Override
@@ -58,12 +81,6 @@ public class Chest extends RoomSide implements Openable, Stash {
     @JsonIgnore
     public boolean isCollected() {
         return isCollected;
-    }
-
-    @Override
-    @JsonGetter("key")
-    public Item getKey() {
-        return key;
     }
 
     @Override

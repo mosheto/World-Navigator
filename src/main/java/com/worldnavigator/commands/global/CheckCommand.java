@@ -1,30 +1,33 @@
-package com.worldnavigator.commands.tradeshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
-import com.worldnavigator.components.Seller;
+import com.worldnavigator.commands.Output;
+import com.worldnavigator.components.*;
 
+public class CheckCommand implements Command {
 
-public class ListCommand implements Command {
+    private final Output output;
+
+    public CheckCommand(Output output) {
+        this.output = output;
+    }
 
     @Override
     public void execute(String... args) {
+
         Maze maze = GameState.getState().getMaze();
         Player player = GameState.getState().getPlayer();
 
-        Seller seller = (Seller) maze
+        RoomSide side = maze
                 .getRoom(player.getRoom())
                 .getSide(player.getDirection());
 
-        seller.getPrices().forEach((key, val) -> {
-            System.out.printf("%s: %d\n", key, val);
-        });
+        side.accept(new CheckVisitor(output));
     }
 
     @Override
     public String toString() {
-        return "list";
+        return "check";
     }
 }

@@ -1,7 +1,8 @@
-package com.worldnavigator.commands.globalshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.components.Maze;
 import com.worldnavigator.components.Player;
 import com.worldnavigator.components.Room;
@@ -13,6 +14,12 @@ import java.util.Map;
 
 public class LookCommand implements Command {
 
+    private final Output output;
+
+    public LookCommand(Output output) {
+        this.output = output;
+    }
+
     @Override
     public void execute(String... args) {
         Maze maze = GameState.getState().getMaze();
@@ -22,13 +29,14 @@ public class LookCommand implements Command {
         RoomSide side = room.getSide(player.getDirection());
 
         Map<String, Item> items = player.getItems();
+
         if(room.isLit()
-                || items.containsKey("flashlight")
-                || ((Flashlight) items.get("flashlight")).isOn()
+                || (items.containsKey("flashlight")
+                && ((Flashlight) items.get("flashlight")).isOn())
         ) {
-            System.out.println(side);
+            output.println(side);
         } else {
-            System.out.println("Dark");
+            output.println("Dark");
         }
     }
 

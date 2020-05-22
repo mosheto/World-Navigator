@@ -1,4 +1,4 @@
-package com.worldnavigator.commands.globalshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;

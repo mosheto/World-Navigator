@@ -1,12 +1,19 @@
-package com.worldnavigator.commands.globalshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.components.Maze;
 import com.worldnavigator.components.Player;
 import com.worldnavigator.components.Room;
 
 public class SwitchLightsCommand implements Command {
+
+    private final Output output;
+
+    public SwitchLightsCommand(Output output) {
+        this.output = output;
+    }
 
     @Override
     public void execute(String... args) {
@@ -19,8 +26,8 @@ public class SwitchLightsCommand implements Command {
             room.switchLights();
 
         } else {
-            System.out.println("The room doesn't have lights.");
-            System.out.println("You should use a flashlight to see.");
+            output.println("The room doesn't have lights!");
+            output.println("You should use a flashlight to see.");
         }
     }
 

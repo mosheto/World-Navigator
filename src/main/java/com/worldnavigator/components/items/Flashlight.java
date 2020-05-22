@@ -3,6 +3,7 @@ package com.worldnavigator.components.items;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 public class Flashlight extends Item {
     private boolean isOn;
 
@@ -11,12 +12,13 @@ public class Flashlight extends Item {
         this.isOn = false;
     }
 
-    public void turnOn() {
-        isOn = true;
+    @Override
+    public void accept(ItemVisitor visitor) {
+        visitor.execute(this);
     }
 
-    public void turnOff() {
-        isOn = false;
+    public void setOn(boolean isOn) {
+        this.isOn = isOn;
     }
 
     @JsonIgnore
@@ -24,6 +26,11 @@ public class Flashlight extends Item {
         return isOn;
     }
 
+    /**
+     *
+     * @return the string "flashlight" as all instances of this class
+     *         are equal.
+     */
     @Override
     public String toString() {
         return "flashlight";

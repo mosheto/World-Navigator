@@ -1,9 +1,6 @@
 package com.worldnavigator.commands;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,21 +9,19 @@ import java.util.Map;
  */
 public class Shell implements Command {
 
+    private String prompt;
     private final String PROMPT_SUFFIX = "> ";
 
-    private String prompt;
+    protected final Input input;
+    protected final Output output;
 
-    private BufferedReader reader;
     private Map<String, Command> commands;
 
-    public Shell() {
-        this("");
-    }
-
-    public Shell(String prompt) {
+    public Shell(Input input, Output output, String prompt, Map<String, Command> commands) {
+        this.input = input;
+        this.output = output;
         this.prompt = prompt;
-        this.commands = new HashMap<>();
-        this.reader = new BufferedReader(new InputStreamReader(System.in));
+        this.commands = commands;
 
         addCommand("help", new Help());
     }
@@ -46,23 +41,18 @@ public class Shell implements Command {
     public void execute(String... args) {
 
         while(true) {
+            output.print(prompt + PROMPT_SUFFIX);
+            String[] splits = next();
 
-            try {
-                String[] splits = next();
+            String command = splits[0];
+            String arguments = splits[1];
 
-                String command = splits[0];
-                String arguments = splits[1];
-
-                if(command.equals("")) {
-                    continue;
-                } if(command.equals("exit")) {
-                    break;
-                } else {
-                    execute(command, arguments);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(command.equals("")) {
+                continue;
+            } if(command.equals("exit")) {
+                break;
+            } else {
+                execute(command, arguments);
             }
         }
     }
@@ -74,10 +64,15 @@ public class Shell implements Command {
     private void execute(String command, String args) {
 
         if(commands.containsKey(command)) {
-            commands.get(command).execute(args.split("\\s+"));
+
+            if(args.isEmpty())
+                commands.get(command).execute();
+            else
+                commands.get(command).execute(args.split("\\s+"));
+
         } else {
-            System.out.println("Invalid command!");
-            System.out.println("Type \"help\" to see the list of commands");
+            output.println("Invalid command!");
+            output.println("Type \"help\" to see the list of commands.");
         }
     }
 
@@ -87,11 +82,11 @@ public class Shell implements Command {
      * and the second is the arguments
      * @throws IOException
      */
-    private String[] next() throws IOException {
-        System.out.print(prompt + PROMPT_SUFFIX);
-        String line = reader.readLine().trim().toLowerCase();
-
-        String[] splits = line.split("\\s+", 2);
+    private String[] next() {
+        String[] splits = input.read()
+                .trim()
+                .toLowerCase()
+                .split("\\s+", 2);
 
         if(splits.length == 1)
             return new String[] { splits[0], "" };
@@ -104,27 +99,26 @@ public class Shell implements Command {
         @Override
         public void execute(String... args) {
 
-            // Get help for a specific command
             if(args.length == 1) {
-                if(commands.containsKey(args[0])) {
-                    System.out.println(commands.get(args[0]));
-                    return;
 
-                } else if(args[0].length() > 1) {
-                    System.out.println("There is no command with that name!");
-                    return;
+                String command = args[0];
+                if(commands.containsKey(command)) {
+                    output.println(commands.get(command));
 
+                } else {
+                    output.println("There is no command with that name!");
                 }
-            }
 
-            System.out.println("Available commands are:");
-            for(Command command : commands.values())
-                System.out.println(command);
+            } else {
+                output.println("Available commands are:");
+                for(Command command : commands.values())
+                    output.println(command);
+            }
         }
 
         @Override
         public String toString() {
-            return "help <command>";
+            return "help [command]";
         }
     }
 }

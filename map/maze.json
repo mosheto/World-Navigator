@@ -4,19 +4,6 @@
       "sides" : {
         "NORTH" : {
           "@type": "seller",
-          "items": {
-            "flashlight": {
-              "@type": "flashlight"
-            },
-            "blue key": {
-              "@type": "key",
-              "color": "blue"
-            },
-            "brown key": {
-              "@type": "key",
-              "color": "brown"
-            }
-          },
           "prices": {
             "flashlight": 20,
             "blue key": 120,
@@ -30,8 +17,8 @@
             "color" : "blue"
           },
           "nextRoom" : 1,
-          "isOpen" : false,
-          "isUnlocked": true
+          "open" : false,
+          "unlocked": true
         },
         "SOUTH" : {
           "@type" : "wall"
@@ -52,8 +39,8 @@
           "@type": "door",
           "key": null,
           "nextRoom": -1,
-          "isOpen": false,
-          "isUnlocked": true
+          "open": false,
+          "unlocked": true
         },
         "SOUTH": {
           "@type": "wall"
@@ -65,8 +52,8 @@
             "color": "blue"
           },
           "nextRoom": 0,
-          "isOpen": false,
-          "isUnlocked": true
+          "open": false,
+          "unlocked": true
         }
       },
       "lit": false,

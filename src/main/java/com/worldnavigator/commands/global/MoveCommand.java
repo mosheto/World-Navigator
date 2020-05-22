@@ -1,16 +1,23 @@
-package com.worldnavigator.commands.globalshell;
+package com.worldnavigator.commands.global;
 
 import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
+import com.worldnavigator.commands.Output;
 import com.worldnavigator.components.*;
 
 public class MoveCommand implements Command {
 
+    private final Output output;
+
+    public MoveCommand(Output output) {
+        this.output = output;
+    }
+
     @Override
     public void execute(String... args) {
         if(!validate(args)) {
-            System.out.println("Invalid argument to the move command!");
-            System.out.println("Arguments are <forward> or <backward>");
+            output.println("Invalid argument to the move command!");
+            output.println("Arguments are <forward> or <backward>");
             return;
         }
 
@@ -30,21 +37,21 @@ public class MoveCommand implements Command {
             Door door = (Door) side;
 
             if(!door.isUnlocked()) {
-                System.out.printf("Door is locked, %s is needed to unlock!\n", door.getKey());
+                output.println(String.format("Door is locked, %s is needed to unlock!", door.getKey()));
 
             }else if(!door.isOpen()) {
-                System.out.println("Door is not open!");
+                output.println("Door is not open!");
 
             } else if(door.getNextRoom() >= 0) {
                 player.setRoom(door.getNextRoom());
 
             } else {
-                System.out.println("Congrats you won!");
-                System.out.println("you have reached the end of the maze!");
+                output.println("Congratulations you won!");
+                output.println("you have reached the end of the maze!");
             }
 
         } else {
-            System.out.println("You can't move there is no door!");
+            output.println("You can't move there is no door!");
         }
     }
 
