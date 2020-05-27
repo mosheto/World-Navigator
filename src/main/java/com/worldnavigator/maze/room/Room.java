@@ -1,8 +1,9 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.worldnavigator.maze.Direction;
 
 import java.util.Map;
 

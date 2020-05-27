@@ -1,4 +1,4 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze;
 
 public enum Direction {
     NORTH, EAST, SOUTH, WEST;

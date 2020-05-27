@@ -1,27 +1,23 @@
 package com.worldnavigator.commands.trade;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
-import com.worldnavigator.components.Seller;
+import com.worldnavigator.maze.Player;
+import com.worldnavigator.maze.room.Seller;
 
 public class SellCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public SellCommand(Output output) {
+    public SellCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
-        Maze maze = GameState.getState().getMaze();
-        Player player = GameState.getState().getPlayer();
-
-        Seller seller = (Seller) maze
-                .getRoom(player.getRoom())
+        Seller seller = (Seller) player.current()
                 .getSide(player.getDirection());
 
         String item = String.join(" ", args);
@@ -43,7 +39,12 @@ public class SellCommand implements Command {
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "sell <item>";
+    }
+
+    @Override
+    public String description() {
+        return "Sells an item that you have";
     }
 }

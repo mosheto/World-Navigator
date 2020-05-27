@@ -1,4 +1,6 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze;
+
+import com.worldnavigator.maze.room.*;
 
 public interface RoomSideVisitor {
 

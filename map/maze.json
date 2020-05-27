@@ -59,5 +59,10 @@
       "lit": false,
       "hasLights": true
     }
-  ]
+  ],
+  "time": 3600,
+
+  "gold": 550,
+  "location": 0,
+  "direction": "NORTH"
 }

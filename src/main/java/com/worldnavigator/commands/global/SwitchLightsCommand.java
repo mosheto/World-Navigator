@@ -1,26 +1,25 @@
 package com.worldnavigator.commands.global;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
-import com.worldnavigator.components.Room;
+import com.worldnavigator.maze.Maze;
+import com.worldnavigator.maze.Player;
+import com.worldnavigator.maze.room.Room;
 
 public class SwitchLightsCommand implements Command {
 
+    private final Player player;
+
     private final Output output;
 
-    public SwitchLightsCommand(Output output) {
+    public SwitchLightsCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
-        Maze maze = GameState.getState().getMaze();
-        Player player = GameState.getState().getPlayer();
-
-        Room room = maze.getRoom(player.getRoom());
+        Room room = player.current();
 
         if(room.hasLights()) {
             room.switchLights();
@@ -32,7 +31,12 @@ public class SwitchLightsCommand implements Command {
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "switch-lights";
+    }
+
+    @Override
+    public String description() {
+        return "Will turn the room lights on or off if the room have lights";
     }
 }

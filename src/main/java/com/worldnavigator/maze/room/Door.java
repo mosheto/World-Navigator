@@ -1,39 +1,37 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.worldnavigator.components.items.Item;
-import com.worldnavigator.components.items.Key;
+import com.worldnavigator.maze.RoomSideVisitor;
+import com.worldnavigator.maze.items.Item;
+import com.worldnavigator.maze.items.Key;
 
-import java.util.List;
 import java.util.Objects;
 
-public class Chest extends RoomSide implements Openable, Stash {
-    private Key key;
+public class Door extends RoomSide implements Openable {
+    private final Key key;
     private boolean isOpen;
     private boolean isUnlocked;
 
-    private int gold;
-    private List<Item> items;
-    private boolean isCollected;
+    private int nextRoom;
 
     @JsonCreator
-    public Chest(
+    public Door(
             @JsonProperty("key") Key key,
+            @JsonProperty("nextRoom") int nextRoom,
             @JsonProperty("open") boolean isOpen,
-            @JsonProperty("unlocked") boolean isUnlocked,
-            @JsonProperty("gold") int gold,
-            @JsonProperty("items") List<Item> items
+            @JsonProperty("unlocked") boolean isUnlocked
     ) {
         this.key = key;
+
+        if(isOpen && !isUnlocked)
+            throw new IllegalArgumentException("if isOpen is true so should the isUnlocked");
+
         this.isOpen = isOpen;
         this.isUnlocked = isUnlocked;
 
-        this.gold = gold;
-        this.items = items;
-        this.isCollected = false;
+        this.nextRoom = nextRoom;
     }
 
     @Override
@@ -65,6 +63,24 @@ public class Chest extends RoomSide implements Openable, Stash {
         return isUnlocked;
     }
 
+
+    @Override
+    @JsonGetter("open")
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    @Override
+    @JsonGetter("unlocked")
+    public boolean isUnlocked() {
+        return isUnlocked;
+    }
+
+    @JsonGetter("nextRoom")
+    public int getNextRoom() {
+        return nextRoom;
+    }
+
     @Override
     @JsonGetter("key")
     public Item getKey() {
@@ -72,41 +88,7 @@ public class Chest extends RoomSide implements Openable, Stash {
     }
 
     @Override
-    public List<Item> collect() {
-        isCollected = true;
-        return items;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCollected() {
-        return isCollected;
-    }
-
-    @Override
-    @JsonProperty("open")
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    @Override
-    @JsonProperty("unlocked")
-    public boolean isUnlocked() {
-        return isUnlocked;
-    }
-
-    @JsonGetter("gold")
-    public int getGold() {
-        return gold;
-    }
-
-    @JsonGetter("items")
-    public List<Item> getItems() {
-        return items;
-    }
-
-    @Override
     public String toString() {
-        return "Chest";
+        return "Door";
     }
 }

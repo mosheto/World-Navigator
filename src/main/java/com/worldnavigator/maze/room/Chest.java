@@ -1,31 +1,44 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.worldnavigator.components.items.Item;
-import com.worldnavigator.components.items.Key;
+import com.worldnavigator.maze.RoomSideVisitor;
+import com.worldnavigator.maze.items.Item;
+import com.worldnavigator.maze.items.Key;
 
+import java.util.List;
 import java.util.Objects;
 
-public class Door extends RoomSide implements Openable {
-    private Key key;
+public class Chest extends RoomSide implements Openable {
+    private final Key key;
     private boolean isOpen;
     private boolean isUnlocked;
 
-    private int nextRoom;
+    private final int gold;
+    private final List<Item> items;
+    private boolean isCollected;
 
     @JsonCreator
-    public Door(
+    public Chest(
             @JsonProperty("key") Key key,
-            @JsonProperty("nextRoom") int nextRoom,
             @JsonProperty("open") boolean isOpen,
-            @JsonProperty("unlocked") boolean isUnlocked
+            @JsonProperty("unlocked") boolean isUnlocked,
+            @JsonProperty("gold") int gold,
+            @JsonProperty("items") List<Item> items
     ) {
         this.key = key;
+
+        if(isOpen && !isUnlocked)
+            throw new IllegalArgumentException("if isOpen is true so should the isUnlocked");
+
         this.isOpen = isOpen;
         this.isUnlocked = isUnlocked;
-        this.nextRoom = nextRoom;
+
+        this.gold = gold;
+        this.items = items;
+        this.isCollected = false;
     }
 
     @Override
@@ -57,32 +70,34 @@ public class Door extends RoomSide implements Openable {
         return isUnlocked;
     }
 
-
     @Override
-    @JsonGetter("open")
     public boolean isOpen() {
         return isOpen;
     }
 
     @Override
-    @JsonGetter("unlocked")
     public boolean isUnlocked() {
         return isUnlocked;
     }
 
-    @JsonGetter("nextRoom")
-    public int getNextRoom() {
-        return nextRoom;
-    }
-
     @Override
-    @JsonGetter("key")
     public Item getKey() {
         return key;
     }
 
-    @Override
-    public String toString() {
-        return "Door";
+    public void setCollected(boolean collected) {
+        isCollected = collected;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
     }
 }

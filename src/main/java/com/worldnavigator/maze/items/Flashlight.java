@@ -1,4 +1,4 @@
-package com.worldnavigator.components.items;
+package com.worldnavigator.maze.items;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

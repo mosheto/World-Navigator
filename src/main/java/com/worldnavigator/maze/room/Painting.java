@@ -1,23 +1,23 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.worldnavigator.components.items.Item;
+import com.worldnavigator.maze.RoomSideVisitor;
 
-import java.util.List;
+import com.worldnavigator.maze.items.Key;
 
-public class Painting extends RoomSide implements Stash {
+public class Painting extends RoomSide {
 
-    private List<Item> items;
+    private final Key key;
     private boolean isCollected;
 
     @JsonCreator
     public Painting(
-            @JsonProperty("item") List<Item> items
+            @JsonProperty("key") Key key
     ) {
-        this.items = items;
+        this.key = key;
         this.isCollected = false;
     }
 
@@ -26,18 +26,14 @@ public class Painting extends RoomSide implements Stash {
         visitor.execute(this);
     }
 
-    @Override
-    public List<Item> collect() {
-        isCollected = true;
-        return items;
+    public void setCollected(boolean collected) {
+        isCollected = collected;
     }
 
-    @JsonGetter("items")
-    public List<Item> getItems() {
-        return items;
+    public Key getKey() {
+        return key;
     }
 
-    @Override
     @JsonIgnore
     public boolean isCollected() {
         return isCollected;

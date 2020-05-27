@@ -1,16 +1,17 @@
 package com.worldnavigator.commands.global;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.Direction;
-import com.worldnavigator.components.Player;
+import com.worldnavigator.maze.Direction;
+import com.worldnavigator.maze.Player;
 
 public class RotateCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public RotateCommand(Output output) {
+    public RotateCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
@@ -18,13 +19,11 @@ public class RotateCommand implements Command {
     public void execute(String ...args) {
         if(!validate(args)) {
             output.println("Invalid argument to the rotate command!");
-            output.println("Arguments are <left> or <right>");
+            output.println("Argument is either <left> or <right>");
             return;
         }
 
         String argument = args[0];
-        Player player = GameState.getState().getPlayer();
-
         if(argument.equalsIgnoreCase("left")) {
 
             Direction direction = Direction.getLeftDirection(player.getDirection());
@@ -43,7 +42,12 @@ public class RotateCommand implements Command {
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "rotate <left|right>";
+    }
+
+    @Override
+    public String description() {
+        return "Rotate the player to the left or right";
     }
 }

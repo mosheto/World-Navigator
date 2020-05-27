@@ -1,29 +1,33 @@
 package com.worldnavigator.commands;
 
-import java.io.IOException;
+import com.worldnavigator.maze.Player;
+
 import java.util.Map;
 
 /**
  * This class acts as a shell like bash shell
  * it has a prompt and can accept commands and execute them
  */
-public class Shell implements Command {
+public abstract class Shell implements Command {
 
-    private String prompt;
+    private final String prompt;
     private final String PROMPT_SUFFIX = "> ";
 
     protected final Input input;
     protected final Output output;
 
-    private Map<String, Command> commands;
+    private final Player player;
+    private final Map<String, Command> commands;
 
-    public Shell(Input input, Output output, String prompt, Map<String, Command> commands) {
+    public Shell(Player player, Input input, Output output, String prompt, Map<String, Command> commands) {
         this.input = input;
         this.output = output;
         this.prompt = prompt;
         this.commands = commands;
+        this.player = player;
 
-        addCommand("help", new Help());
+        addCommand("?help", new Help());
+        addCommand("?list", new List());
     }
 
     public void addCommand(String name, Command command) {
@@ -40,7 +44,7 @@ public class Shell implements Command {
     @Override
     public void execute(String... args) {
 
-        while(true) {
+        while(!player.isDone()) {
             output.print(prompt + PROMPT_SUFFIX);
             String[] splits = next();
 
@@ -54,6 +58,11 @@ public class Shell implements Command {
             } else {
                 execute(command, arguments);
             }
+        }
+
+        if(player.isDone()) {
+            output.println("Congratulations you won!");
+            output.println("You have successfully got out of the maze!");
         }
     }
 
@@ -80,7 +89,6 @@ public class Shell implements Command {
      * @returns a tuple of two elements
      * the first is the command name
      * and the second is the arguments
-     * @throws IOException
      */
     private String[] next() {
         String[] splits = input.read()
@@ -101,24 +109,48 @@ public class Shell implements Command {
 
             if(args.length == 1) {
 
-                String command = args[0];
-                if(commands.containsKey(command)) {
-                    output.println(commands.get(command));
+                String commandName = args[0];
+                if(commands.containsKey(commandName)) {
+                    Command command = commands.get(commandName);
+
+                    output.println("Usage: " + command.usage());
+                    output.println(command.description());
 
                 } else {
                     output.println("There is no command with that name!");
                 }
-
             } else {
-                output.println("Available commands are:");
-                for(Command command : commands.values())
-                    output.println(command);
+                output.println("Missing required argument <command-name>");
             }
         }
 
         @Override
-        public String toString() {
-            return "help [command]";
+        public String usage() {
+            return "?help <command-name>";
+        }
+
+        @Override
+        public String description() {
+            return "Give a help message for the given command";
+        }
+    }
+
+    private class List implements Command {
+        @Override
+        public void execute(String... args) {
+            output.println("Available commands are:");
+            for(Command command : commands.values())
+                output.println(command.usage());
+        }
+
+        @Override
+        public String usage() {
+            return "?list";
+        }
+
+        @Override
+        public String description() {
+            return "List all commands that can be called";
         }
     }
 }

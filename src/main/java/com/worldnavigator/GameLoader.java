@@ -1,22 +1,20 @@
 package com.worldnavigator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
+import com.worldnavigator.maze.Maze;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class GameState {
+public class GameLoader {
 
-    private static final GameState state = new GameState();
-    private GameState(){}
-
-    private Maze maze;
-    private Player player;
+    private static final GameLoader loader = new GameLoader();
+    private GameLoader(){}
 
     private Path path;
+
+    private Maze maze;
 
     public void load(Path path) throws IOException {
         this.path = path;
@@ -26,11 +24,6 @@ public class GameState {
         maze = mapper.readValue(
                 Files.newBufferedReader(path.resolve("maze.json")),
                 Maze.class
-        );
-
-        player = mapper.readValue(
-                Files.newBufferedReader(path.resolve("player.json")),
-                Player.class
         );
     }
 
@@ -42,11 +35,7 @@ public class GameState {
         return maze;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public static GameState getState() {
-        return state;
+    public static GameLoader getLoader() {
+        return loader;
     }
 }

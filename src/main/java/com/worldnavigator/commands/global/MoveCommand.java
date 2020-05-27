@@ -1,15 +1,19 @@
 package com.worldnavigator.commands.global;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.*;
+import com.worldnavigator.maze.*;
+import com.worldnavigator.maze.room.Door;
+import com.worldnavigator.maze.room.Room;
+import com.worldnavigator.maze.room.RoomSide;
 
 public class MoveCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public MoveCommand(Output output) {
+    public MoveCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
@@ -17,37 +21,30 @@ public class MoveCommand implements Command {
     public void execute(String... args) {
         if(!validate(args)) {
             output.println("Invalid argument to the move command!");
-            output.println("Arguments are <forward> or <backward>");
+            output.println("Argument is either <forward> or <backward>");
             return;
         }
 
-        Maze maze = GameState.getState().getMaze();
-
-        Player player = GameState.getState().getPlayer();
-        Room room = maze.getRoom(player.getRoom());
-
+        Room room = player.current();
         Direction direction = player.getDirection();
 
         if(args[0].equals("backward"))
-            direction = Direction.getReverseDirection(player.getDirection());
+            direction = Direction.getReverseDirection(direction);
 
         RoomSide side = room.getSide(direction);
 
         if(side instanceof Door) {
             Door door = (Door) side;
 
-            if(!door.isUnlocked()) {
-                output.println(String.format("Door is locked, %s is needed to unlock!", door.getKey()));
+            if(door.isUnlocked()) {
 
-            }else if(!door.isOpen()) {
-                output.println("Door is not open!");
-
-            } else if(door.getNextRoom() >= 0) {
-                player.setRoom(door.getNextRoom());
+                if(door.isOpen())
+                    player.next();
+                else
+                    output.println("The door is not open, you need to open it first!");
 
             } else {
-                output.println("Congratulations you won!");
-                output.println("you have reached the end of the maze!");
+                output.println(String.format("The door is locked, you need a %s to unlock it!", door.getKey()));
             }
 
         } else {
@@ -62,7 +59,12 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "move <forward|backward>";
+    }
+
+    @Override
+    public String description() {
+        return "Moves the player between rooms";
     }
 }

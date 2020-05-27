@@ -1,39 +1,42 @@
 package com.worldnavigator.commands.trade;
 
-import com.worldnavigator.GameState;
+import com.worldnavigator.GameLoader;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
-import com.worldnavigator.components.Seller;
-
-import java.util.Map;
+import com.worldnavigator.maze.Maze;
+import com.worldnavigator.maze.Player;
+import com.worldnavigator.maze.room.Seller;
 
 
 public class ListCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public ListCommand(Output output) {
+    public ListCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
-        Maze maze = GameState.getState().getMaze();
-        Player player = GameState.getState().getPlayer();
-
-        Seller seller = (Seller) maze
-                .getRoom(player.getRoom())
+        Seller seller = (Seller) player
+                .current()
                 .getSide(player.getDirection());
 
-        for (Map.Entry<String, Integer> item : seller.getPrices().entrySet()) {
-            output.println(String.format("%s: %d", item.getKey(), item.getValue()));
-        }
+        output.println("Seller's list:");
+        seller.getPrices().forEach((key, val) -> {
+            output.println(String.format("%s: %d", key, val));
+        });
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "list";
+    }
+
+    @Override
+    public String description() {
+        return "Lists the items that are available to sell or buy";
     }
 }

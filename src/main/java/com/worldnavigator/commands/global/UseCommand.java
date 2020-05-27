@@ -1,40 +1,98 @@
 package com.worldnavigator.commands.global;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.items.*;
+import com.worldnavigator.maze.room.Openable;
+import com.worldnavigator.maze.Player;
+import com.worldnavigator.maze.room.RoomSide;
+import com.worldnavigator.maze.items.*;
 
 import java.util.Map;
 
 public class UseCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public UseCommand(Output output) {
+    public UseCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
         if(args.length < 1) {
-            System.out.println("Invalid argument to the use command!");
-            System.out.println("Argument is <item>");
+            output.println("Invalid argument to the use command!");
+            output.println("Argument is <item>");
             return;
         }
 
         String item = String.join(" ", args);
-        Map<String, Item> items = GameState.getState().getPlayer().getItems();
+        Map<String, Item> items = player.getItems();
 
         if(items.containsKey(item)) {
-            items.get(item).accept(new UseVisitor(output));
+            items.get(item).accept(new UseVisitor(player, output));
         } else {
             output.println("You don't have an item with that name!");
         }
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "use <item>";
+    }
+
+    @Override
+    public String description() {
+        return "Uses the item, for example using a flashlight would it turn on or off.";
+    }
+
+    private static class UseVisitor implements ItemVisitor {
+
+        private final Player player;
+        private final Output output;
+
+        public UseVisitor(Player player, Output output) {
+            this.player = player;
+            this.output = output;
+        }
+
+        @Override
+        public void execute(Key key) {
+
+            RoomSide side = player
+                    .current()
+                    .getSide(player.getDirection());
+
+            if(side instanceof Openable) {
+
+                Openable openable = (Openable) side;
+
+                if(openable.isUnlocked()) {
+
+                    if(openable.lock(key)) {
+                        output.println(String.format("The %s is now locked!", openable));
+                    } else {
+                        output.println(String.format("The key can't be used on this %s!", openable));
+                    }
+
+                } else {
+
+                    if(openable.unlock(key)) {
+                        output.println(String.format("The %s is now unlocked!", openable));
+                    } else {
+                        output.println(String.format("The key can't be used on this %s!", openable));
+                    }
+                }
+
+            } else {
+                output.println("This is not something you can open!");
+            }
+        }
+
+        @Override
+        public void execute(Flashlight flashlight) {
+            flashlight.setOn(!flashlight.isOn());
+        }
     }
 }

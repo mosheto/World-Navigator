@@ -1,30 +1,27 @@
 package com.worldnavigator.commands.trade;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.Maze;
-import com.worldnavigator.components.Player;
-import com.worldnavigator.components.Seller;
-import com.worldnavigator.components.items.Item;
-import com.worldnavigator.components.items.ItemFactory;
-import com.worldnavigator.components.items.NoSuchItemException;
+import com.worldnavigator.maze.Player;
+import com.worldnavigator.maze.room.Seller;
+import com.worldnavigator.maze.items.Item;
+import com.worldnavigator.maze.items.ItemFactory;
+import com.worldnavigator.maze.items.NoSuchItemException;
 
 public class BuyCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public BuyCommand(Output output) {
+    public BuyCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
-        Maze maze = GameState.getState().getMaze();
-        Player player = GameState.getState().getPlayer();
-
-        Seller seller = (Seller) maze
-                .getRoom(player.getRoom())
+        Seller seller = (Seller) player
+                .current()
                 .getSide(player.getDirection());
 
         String item = String.join(" ", args);
@@ -57,11 +54,17 @@ public class BuyCommand implements Command {
 
         } catch (NoSuchItemException e) {
             output.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "buy <item>";
+    }
+
+    @Override
+    public String description() {
+        return "Buy an item from the seller";
     }
 }

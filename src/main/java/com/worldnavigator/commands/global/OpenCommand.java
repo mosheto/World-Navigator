@@ -1,25 +1,26 @@
 package com.worldnavigator.commands.global;
 
-import com.worldnavigator.GameState;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.components.*;
+import com.worldnavigator.maze.*;
+import com.worldnavigator.maze.room.Openable;
+import com.worldnavigator.maze.room.RoomSide;
 
 public class OpenCommand implements Command {
 
+    private final Player player;
     private final Output output;
 
-    public OpenCommand(Output output) {
+    public OpenCommand(Player player, Output output) {
+        this.player = player;
         this.output = output;
     }
 
     @Override
     public void execute(String... args) {
-        Player player = GameState.getState().getPlayer();
 
-        RoomSide side = GameState.getState()
-                .getMaze()
-                .getRoom(player.getRoom())
+        RoomSide side = player
+                .current()
                 .getSide(player.getDirection());
 
         if(side instanceof Openable) {
@@ -36,7 +37,7 @@ public class OpenCommand implements Command {
                 }
 
             } else {
-                output.println(String.format("The %s is locked, %s is needed to unlock\n", openable, openable.getKey()));
+                output.println(String.format("The %s is locked, you need a %s to unlock it!", openable, openable.getKey()));
             }
 
         } else {
@@ -45,7 +46,12 @@ public class OpenCommand implements Command {
     }
 
     @Override
-    public String toString() {
+    public String usage() {
         return "open";
+    }
+
+    @Override
+    public String description() {
+        return "If you are in front of a door and it's unlocked it will open it";
     }
 }

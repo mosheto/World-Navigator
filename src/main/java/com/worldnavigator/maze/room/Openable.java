@@ -1,6 +1,6 @@
-package com.worldnavigator.components;
+package com.worldnavigator.maze.room;
 
-import com.worldnavigator.components.items.Item;
+import com.worldnavigator.maze.items.Item;
 
 public interface Openable {
 

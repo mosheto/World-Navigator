@@ -1,4 +1,4 @@
-package com.worldnavigator.components.items;
+package com.worldnavigator.maze.items;
 
 public class NoSuchItemException extends Exception {
 
