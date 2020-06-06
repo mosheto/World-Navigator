@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class StandardInput implements Input {
 
-    private BufferedReader reader;
+    private final BufferedReader reader;
 
     public StandardInput() {
         reader = new BufferedReader(new InputStreamReader(System.in));

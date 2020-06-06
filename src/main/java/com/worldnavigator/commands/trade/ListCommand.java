@@ -1,9 +1,7 @@
 package com.worldnavigator.commands.trade;
 
-import com.worldnavigator.GameLoader;
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.maze.Maze;
 import com.worldnavigator.maze.Player;
 import com.worldnavigator.maze.room.Seller;
 
@@ -25,13 +23,11 @@ public class ListCommand implements Command {
                 .getSide(player.getDirection());
 
         output.println("Seller's list:");
-        seller.getPrices().forEach((key, val) -> {
-            output.println(String.format("%s: %d", key, val));
-        });
+        seller.getPrices().forEach((key, val) -> output.println(String.format("%s: %d", key, val)));
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "list";
     }
 

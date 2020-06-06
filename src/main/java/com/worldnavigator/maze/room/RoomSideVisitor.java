@@ -1,4 +1,4 @@
-package com.worldnavigator.maze;
+package com.worldnavigator.maze.room;
 
 import com.worldnavigator.maze.room.*;
 

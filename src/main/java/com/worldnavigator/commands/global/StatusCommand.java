@@ -15,7 +15,7 @@ public class StatusCommand implements Command {
     }
 
     @Override
-    public void execute(String ...args) {
+    public void execute(String... args) {
         output.println("Gold: " + player.getGold());
         output.println("Direction: " + player.getDirection());
 
@@ -29,7 +29,7 @@ public class StatusCommand implements Command {
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "status";
     }
 
@@ -37,10 +37,5 @@ public class StatusCommand implements Command {
     public String description() {
         return "gives which direction the player is " +
                 "facing and the amount of gold and items that he has";
-    }
-
-    @Override
-    public String toString() {
-        return usage() + " " + description();
     }
 }

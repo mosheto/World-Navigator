@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Room {
     private boolean isLit;
-    private boolean hasLights;
+    private final boolean hasLights;
 
     Map<Direction, RoomSide> sides;
 

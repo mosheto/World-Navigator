@@ -39,7 +39,7 @@ public class MoveCommand implements Command {
             if(door.isUnlocked()) {
 
                 if(door.isOpen())
-                    player.next();
+                    player.move(direction);
                 else
                     output.println("The door is not open, you need to open it first!");
 
@@ -59,8 +59,13 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public String usage() {
-        return "move <forward|backward>";
+    public String name() {
+        return "move";
+    }
+
+    @Override
+    public String args() {
+        return "<forward|backward>";
     }
 
     @Override

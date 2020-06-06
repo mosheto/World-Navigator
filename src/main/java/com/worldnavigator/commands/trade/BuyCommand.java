@@ -49,7 +49,7 @@ public class BuyCommand implements Command {
 
     private void addItemToPlayer(String name, Player player) {
         try {
-            Item item = ItemFactory.getFactory().item(name);
+            Item item = ItemFactory.getFactory().valueOf(name);
             player.addItem(item);
 
         } catch (NoSuchItemException e) {
@@ -59,8 +59,13 @@ public class BuyCommand implements Command {
     }
 
     @Override
-    public String usage() {
-        return "buy <item>";
+    public String name() {
+        return "buy";
+    }
+
+    @Override
+    public String args() {
+        return "<item>";
     }
 
     @Override

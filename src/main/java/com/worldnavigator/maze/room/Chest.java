@@ -1,10 +1,7 @@
 package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.worldnavigator.maze.RoomSideVisitor;
 import com.worldnavigator.maze.items.Item;
 import com.worldnavigator.maze.items.Key;
 

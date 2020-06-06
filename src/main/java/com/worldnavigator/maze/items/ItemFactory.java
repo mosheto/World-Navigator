@@ -5,7 +5,7 @@ public class ItemFactory {
     private static final ItemFactory factory = new ItemFactory();
     private ItemFactory(){}
 
-    public Item item(String s) throws NoSuchItemException {
+    public Item valueOf(String s) throws NoSuchItemException {
         s = s.trim().toLowerCase();
 
         if(s.equals("flashlight")) {

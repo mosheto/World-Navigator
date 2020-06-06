@@ -4,41 +4,41 @@ import com.worldnavigator.commands.*;
 import com.worldnavigator.commands.trade.TradeShell;
 import com.worldnavigator.maze.Player;
 
-import java.util.HashMap;
-
 public final class GlobalShell extends Shell {
 
-    public GlobalShell(Player player, Input input, Output output) {
-        super(player, input, output, "", new HashMap<>());
+    private Player player;
 
-        addCommand("trade", new TradeShell(player, input, output));
-        addCommand("rotate", new RotateCommand(player, output));
-        addCommand("status", new StatusCommand(player, output));
-        addCommand("move", new MoveCommand(player, output));
-        addCommand("look", new LookCommand(player, output));
-        addCommand("check", new CheckCommand(player, output));
-        addCommand("open", new OpenCommand(player, output));
-        addCommand("use", new UseCommand(player, output));
-        addCommand("switch-lights", new SwitchLightsCommand(player, output));
-        addCommand("reload", new ReloadCommand());
+    public GlobalShell(Player player, Input input, Output output) {
+        super(input, output, "");
+
+        this.player = player;
+
+        addCommands(
+            new TradeShell(player, input, output),
+            new RotateCommand(player, output),
+            new StatusCommand(player, output),
+            new MoveCommand(player, output),
+            new LookCommand(player, output),
+            new CheckCommand(player, output),
+            new OpenCommand(player, output),
+            new UseCommand(player, output),
+            new SwitchLightsCommand(player, output)
+        );
     }
 
     @Override
     public void execute(String... args) {
-        output.println("Welcome to World Navigator!");
-        output.println("To see the available commands");
-        output.println("and how to use them type \"?list\"");
-        output.println("");
 
         super.execute(args);
 
-        output.println("");
-        output.println("Good bye!");
-        output.println("Hope you enjoyed the game!");
+        if(player.isDone()) {
+            output.println("Congratulations you won!");
+            output.println("You have successfully got out of the maze!");
+        }
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "global";
     }
 

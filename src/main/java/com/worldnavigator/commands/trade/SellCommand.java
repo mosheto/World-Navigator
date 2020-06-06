@@ -39,8 +39,13 @@ public class SellCommand implements Command {
     }
 
     @Override
-    public String usage() {
-        return "sell <item>";
+    public String name() {
+        return "sell";
+    }
+
+    @Override
+    public String args() {
+        return "<item>";
     }
 
     @Override

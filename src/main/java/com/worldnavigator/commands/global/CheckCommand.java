@@ -27,7 +27,7 @@ public class CheckCommand implements Command {
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "check";
     }
 
@@ -52,6 +52,7 @@ public class CheckCommand implements Command {
                 } else {
                     player.addItem(key);
                     mirror.setCollected(true);
+                    output.println(String.format("You got a %s.", key));
                 }
             }
         }
@@ -70,6 +71,7 @@ public class CheckCommand implements Command {
                 } else {
                     player.addItem(key);
                     painting.setCollected(true);
+                    output.println(String.format("You got a %s.", key));
                 }
             }
         }

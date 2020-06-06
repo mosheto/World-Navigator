@@ -4,7 +4,7 @@ public class App {
 
     public static void main(String[] args) {
         if(args.length != 1) {
-            System.err.println("Usage: wn map-path");
+            System.err.println("Usage: ./wn maze-filename");
             return;
         }
 

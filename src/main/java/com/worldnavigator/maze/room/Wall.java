@@ -1,7 +1,5 @@
 package com.worldnavigator.maze.room;
 
-import com.worldnavigator.maze.RoomSideVisitor;
-
 public class Wall extends RoomSide {
 
     @Override

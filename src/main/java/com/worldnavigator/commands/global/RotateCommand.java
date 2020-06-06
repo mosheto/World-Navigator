@@ -42,8 +42,13 @@ public class RotateCommand implements Command {
     }
 
     @Override
-    public String usage() {
-        return "rotate <left|right>";
+    public String name() {
+        return "rotate";
+    }
+
+    @Override
+    public String args() {
+        return "<left|right>";
     }
 
     @Override

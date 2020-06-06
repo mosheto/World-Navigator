@@ -2,9 +2,8 @@ package com.worldnavigator.commands.global;
 
 import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
-import com.worldnavigator.maze.Maze;
 import com.worldnavigator.maze.Player;
-import com.worldnavigator.maze.RoomSideVisitor;
+import com.worldnavigator.maze.room.RoomSideVisitor;
 import com.worldnavigator.maze.room.*;
 import com.worldnavigator.maze.items.Flashlight;
 import com.worldnavigator.maze.items.Item;
@@ -38,7 +37,7 @@ public class LookCommand implements Command {
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "look";
     }
 

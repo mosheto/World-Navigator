@@ -46,7 +46,7 @@ public class OpenCommand implements Command {
     }
 
     @Override
-    public String usage() {
+    public String name() {
         return "open";
     }
 

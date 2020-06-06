@@ -1,9 +1,5 @@
 package com.worldnavigator.maze;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.worldnavigator.maze.items.Item;
 import com.worldnavigator.maze.room.Door;
 import com.worldnavigator.maze.room.Room;
@@ -12,19 +8,16 @@ import com.worldnavigator.maze.room.RoomSide;
 import java.util.*;
 
 public class Player {
-    private final Maze maze;
-
     // Possessions
     private int gold;
     private Map<String, Item> items;
-
 
     private int location;
     private boolean isDone;
     private Direction direction;
 
+    private final Maze maze;
 
-    @JsonCreator
     public Player(
             Maze maze,
             int gold,
@@ -43,7 +36,13 @@ public class Player {
         this.direction = direction;
     }
 
-    public void next() {
+    /**
+     * Moves the player to the room based on provided direction
+     * if there is an open door in that direction
+     *
+     * @param direction The direction of the door you want to go through
+     */
+    public void move(Direction direction) {
         if(isDone)
             throw new NoSuchElementException();
 
@@ -78,7 +77,6 @@ public class Player {
         return isDone;
     }
 
-    @JsonSetter
     public void setGold(int amount) {
         gold = amount;
     }

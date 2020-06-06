@@ -38,8 +38,13 @@ public class UseCommand implements Command {
     }
 
     @Override
-    public String usage() {
-        return "use <item>";
+    public String name() {
+        return "use";
+    }
+
+    @Override
+    public String args() {
+        return "<item>";
     }
 
     @Override

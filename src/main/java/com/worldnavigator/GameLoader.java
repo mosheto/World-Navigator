@@ -3,6 +3,7 @@ package com.worldnavigator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.worldnavigator.maze.Maze;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,25 +15,16 @@ public class GameLoader {
 
     private Path path;
 
-    private Maze maze;
-
-    public void load(Path path) throws IOException {
+    public void setPath(Path path) {
         this.path = path;
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        maze = mapper.readValue(
-                Files.newBufferedReader(path.resolve("maze.json")),
-                Maze.class
-        );
     }
 
-    public void reload() throws IOException {
-        load(path);
-    }
+    public Maze load() throws IOException {
 
-    public Maze getMaze() {
-        return maze;
+        try(BufferedReader reader = Files.newBufferedReader(path)) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(reader, Maze.class);
+        }
     }
 
     public static GameLoader getLoader() {

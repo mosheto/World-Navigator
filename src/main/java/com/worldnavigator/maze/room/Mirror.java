@@ -3,10 +3,7 @@ package com.worldnavigator.maze.room;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.worldnavigator.maze.RoomSideVisitor;
 import com.worldnavigator.maze.items.Key;
-
-import java.util.List;
 
 public class Mirror extends RoomSide {
 

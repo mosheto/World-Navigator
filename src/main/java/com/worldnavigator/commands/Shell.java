@@ -1,8 +1,9 @@
 package com.worldnavigator.commands;
 
-import com.worldnavigator.maze.Player;
-
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class acts as a shell like bash shell
@@ -11,27 +12,45 @@ import java.util.Map;
 public abstract class Shell implements Command {
 
     private final String prompt;
-    private final String PROMPT_SUFFIX = "> ";
+    private static final String PROMPT_SUFFIX = "> ";
 
     protected final Input input;
     protected final Output output;
 
-    private final Player player;
-    private final Map<String, Command> commands;
+    private Map<String, Command> commands;
 
-    public Shell(Player player, Input input, Output output, String prompt, Map<String, Command> commands) {
+    protected boolean done;
+
+    public Shell(Input input, Output output, String prompt) {
         this.input = input;
         this.output = output;
         this.prompt = prompt;
-        this.commands = commands;
-        this.player = player;
 
-        addCommand("?help", new Help());
-        addCommand("?list", new List());
+        this.done = false;
+        this.commands = new LinkedHashMap<>();
+
+        addCommands(
+                new Help(),
+                new ListCommands(),
+                new Exit()
+        );
     }
 
-    public void addCommand(String name, Command command) {
-        this.commands.put(name.trim().toLowerCase(), command);
+    /**
+     *
+     * @param commands to be added to the shell.
+     */
+    public final void addCommands(Command... commands) {
+        this.commands.putAll(
+            Arrays
+                .stream(commands)
+                .collect(
+                    Collectors.toMap(
+                        Command::name,
+                        c -> c
+                    )
+                )
+        );
     }
 
     /**
@@ -44,53 +63,49 @@ public abstract class Shell implements Command {
     @Override
     public void execute(String... args) {
 
-        while(!player.isDone()) {
+        while(!done()) {
             output.print(prompt + PROMPT_SUFFIX);
-            String[] splits = next();
 
-            String command = splits[0];
-            String arguments = splits[1];
+            String[] parts = read();
+            String command = parts[0];
+            String arguments = parts[1];
 
-            if(command.equals("")) {
+            if(command.isEmpty())
                 continue;
-            } if(command.equals("exit")) {
-                break;
-            } else {
-                execute(command, arguments);
-            }
-        }
 
-        if(player.isDone()) {
-            output.println("Congratulations you won!");
-            output.println("You have successfully got out of the maze!");
+            execute(command, arguments);
         }
     }
 
-    /**
-     * This is the main processing of the command
-     * entered by the user
-     */
     private void execute(String command, String args) {
 
         if(commands.containsKey(command)) {
 
-            if(args.isEmpty())
-                commands.get(command).execute();
-            else
-                commands.get(command).execute(args.split("\\s+"));
+            commands
+                    .get(command)
+                    .execute(args.split("\\s+"));
 
         } else {
-            output.println("Invalid command!");
-            output.println("Type \"help\" to see the list of commands.");
+            output.println("There is no command with that name!");
+            output.println("Type \"list-commands\" to list the commands that are available.");
         }
+    }
+
+    /**
+     * Used by the while loop in the execute method of the shell.
+     *
+     * @return true if the shell must stop.
+     */
+    protected boolean done() {
+        return done;
     }
 
     /**
      * @returns a tuple of two elements
      * the first is the command name
-     * and the second is the arguments
+     * and the second is it's arguments
      */
-    private String[] next() {
+    private String[] read() {
         String[] splits = input.read()
                 .trim()
                 .toLowerCase()
@@ -101,6 +116,7 @@ public abstract class Shell implements Command {
 
         return splits;
     }
+
 
     private class Help implements Command {
 
@@ -125,8 +141,13 @@ public abstract class Shell implements Command {
         }
 
         @Override
-        public String usage() {
-            return "?help <command-name>";
+        public String name() {
+            return "help";
+        }
+
+        @Override
+        public String args() {
+            return "<command-name>";
         }
 
         @Override
@@ -135,22 +156,44 @@ public abstract class Shell implements Command {
         }
     }
 
-    private class List implements Command {
+    private class ListCommands implements Command {
         @Override
         public void execute(String... args) {
-            output.println("Available commands are:");
+            output.println("Available commands are:\n");
             for(Command command : commands.values())
                 output.println(command.usage());
         }
 
         @Override
-        public String usage() {
-            return "?list";
+        public String name() {
+            return "list-commands";
+        }
+
+        @Override
+        public String args() {
+            return "";
         }
 
         @Override
         public String description() {
             return "List all commands that can be called";
+        }
+    }
+
+    private class Exit implements Command {
+        @Override
+        public void execute(String... args) {
+            done = true;
+        }
+
+        @Override
+        public String name() {
+            return "exit";
+        }
+
+        @Override
+        public String description() {
+            return "Exits the current shell.";
         }
     }
 }
