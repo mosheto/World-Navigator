@@ -1,7 +1,6 @@
 package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.worldnavigator.maze.items.Item;
 import com.worldnavigator.maze.items.Key;
@@ -64,24 +63,20 @@ public final class Door extends RoomSide implements Openable {
 
 
     @Override
-    @JsonGetter("open")
     public boolean isOpen() {
         return isOpen;
     }
 
     @Override
-    @JsonGetter("unlocked")
     public boolean isUnlocked() {
         return isUnlocked;
     }
 
-    @JsonGetter("nextRoom")
     public int getNextRoom() {
         return nextRoom;
     }
 
     @Override
-    @JsonGetter("key")
     public Key getKey() {
         return key;
     }

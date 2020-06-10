@@ -100,16 +100,6 @@ public final class CheckCommand implements Command {
             execute((Openable) door);
         }
 
-        @Override
-        public void execute(Seller seller) {
-            output.println("You are in front of a seller!");
-        }
-
-        @Override
-        public void execute(Wall wall) {
-            output.println("You are in front of an empty wall!");
-        }
-
         private void execute(Openable openable) {
             if(openable.isUnlocked()) {
 
@@ -121,6 +111,16 @@ public final class CheckCommand implements Command {
             } else {
                 output.println(String.format("The %s is locked, you need a %s to unlock it!", openable, openable.getKey()));
             }
+        }
+
+        @Override
+        public void execute(Seller seller) {
+            output.println("You are in front of a seller!");
+        }
+
+        @Override
+        public void execute(Wall wall) {
+            output.println("You are in front of an empty wall!");
         }
     }
 }

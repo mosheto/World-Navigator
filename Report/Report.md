@@ -210,6 +210,87 @@ public interface Openable {
 
 And each method has a clear name defining what it does.
 
+## Use Solution Domain Names
+
+`ItemFactory` makes it clear that the class implements an Abstract Factory.
+
+`RoomSideVisitor` makes it clear that the interface represents a visitor pattern.
+
+## Hungarian Notation
+
+Following the the book's advice the name that gets the player's current
+room is named `player.current()` as the IDE can infer the type.
+
+## Functions should be small
+
+following the book's advice all functions that I have written
+are no more than 20 lines give or take.
+
+In the `Shell` the `execute` method is broken down to a smaller methods
+each one has a single responsibility.
+
+```
+@Override
+public void execute(String... args) {
+
+    while(!done()) {
+        output.print(prompt + PROMPT_SUFFIX);
+
+        String[] parts = read();
+        String command = parts[0];
+        String arguments = parts[1];
+
+        if(command.isEmpty())
+            continue;
+
+        execute(command, arguments);
+    }
+}
+```
+
+The `done()` method is responsible for whether the shell should exit or not.
+
+The `read()` method is responsible for reading a command from the user.
+
+The `execute()` private method is responsible for finding the command and executing 
+the command.
+
+This way the methods are small, clear and readable.
+
+## Don’t Repeat Yourself
+
+Instead of repeating the code in the `CheckVisitor` for the `Door`
+and the `Chest` I made a method for handling both using the fact that
+the implementation depends on the `Openable` interface, and made the 
+same for the `Painting` and the `Mirror` class as the implementation 
+depands on the `HiddenItem` interface.
+
+## Comments
+
+I didn't use any comments in the code and when I have the urge to write 
+a comment I set back and think if a could make the code more readable.
+
+But as the book said I made good comments like **Javadocs in Public APIs**.
+
+## Formatting
+
+### Vertical Openness Between Concepts
+
+Making a blank line between concepts like between methods or import statements
+and class declaration.
+
+And this advice is also enforced by the Style Guide.
+
+### Dependent Functions
+
+Dependent Functions should be close together.
+
+![Dependent Functions](./DepFunc.png)
+
+### Vertical Ordering
+
+When implementing an interface the methods of it should be together.
+
 # Design Patterns
 
 ## Composite Pattern
@@ -218,7 +299,7 @@ Defining the commands hierarchy where a simple command is a leaf
 and the shell is a composite.
 
 Each shell has a list of commands that are related to the giving shell
-and a shell can have another shell in the list of it's commands.
+and a shell can have another shell in the list of its commands.
 
 ![Composite](./Composite.png)
 
