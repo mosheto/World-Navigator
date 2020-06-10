@@ -6,7 +6,7 @@ import com.worldnavigator.maze.*;
 import com.worldnavigator.maze.room.Openable;
 import com.worldnavigator.maze.room.RoomSide;
 
-public class OpenCommand implements Command {
+public final class OpenCommand implements Command {
 
     private final Player player;
     private final Output output;

@@ -1,21 +1,22 @@
 package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.worldnavigator.maze.items.Key;
+import com.worldnavigator.maze.items.Item;
 
-public class Painting extends RoomSide {
+import java.util.Optional;
 
-    private final Key key;
+public final class Painting extends RoomSide implements HiddenItem {
+
+    private final Item item;
     private boolean isCollected;
 
     @JsonCreator
     public Painting(
-            @JsonProperty("key") Key key
+            @JsonProperty("item") Item item
     ) {
-        this.key = key;
+        this.item = item;
         this.isCollected = false;
     }
 
@@ -24,15 +25,17 @@ public class Painting extends RoomSide {
         visitor.execute(this);
     }
 
+    @Override
+    public Optional<Item> getItem() {
+        return Optional.ofNullable(item);
+    }
+
+    @Override
     public void setCollected(boolean collected) {
         isCollected = collected;
     }
 
-    public Key getKey() {
-        return key;
-    }
-
-    @JsonIgnore
+    @Override
     public boolean isCollected() {
         return isCollected;
     }

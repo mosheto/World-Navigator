@@ -1,7 +1,5 @@
 package com.worldnavigator.maze.room;
 
-import com.worldnavigator.maze.room.*;
-
 public interface RoomSideVisitor {
 
     void execute(Mirror mirror);

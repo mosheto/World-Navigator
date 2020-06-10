@@ -4,10 +4,11 @@ import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
 import com.worldnavigator.maze.*;
 import com.worldnavigator.maze.items.Item;
-import com.worldnavigator.maze.items.Key;
 import com.worldnavigator.maze.room.*;
 
-public class CheckCommand implements Command {
+import java.util.Optional;
+
+public final class CheckCommand implements Command {
 
     private final Player player;
     private final Output output;
@@ -36,43 +37,34 @@ public class CheckCommand implements Command {
         return "Checks the thing in front of the player.";
     }
 
-    private class CheckVisitor implements RoomSideVisitor {
+    private final class CheckVisitor implements RoomSideVisitor {
 
         @Override
         public void execute(Mirror mirror) {
-            Key key = mirror.getKey();
-
-            if(key == null) {
-                output.println("There is nothing hidden here!");
-
-            } else {
-                if(mirror.isCollected()) {
-                    output.println("You already got the hidden key!");
-
-                } else {
-                    player.addItem(key);
-                    mirror.setCollected(true);
-                    output.println(String.format("You got a %s.", key));
-                }
-            }
+            execute((HiddenItem) mirror);
         }
 
         @Override
         public void execute(Painting painting) {
-            Key key = painting.getKey();
+            execute((HiddenItem) painting);
+        }
 
-            if(key == null) {
-                output.println("There is nothing hidden here!");
+        private void execute(HiddenItem hiddenItem) {
+            Optional<Item> item = hiddenItem.getItem();
 
-            } else {
-                if(painting.isCollected()) {
-                    output.println("You already got the hidden key!");
+            if(item.isPresent()) {
+
+                if(hiddenItem.isCollected()) {
+                    output.println("You already got the hidden item!");
 
                 } else {
-                    player.addItem(key);
-                    painting.setCollected(true);
-                    output.println(String.format("You got a %s.", key));
+                    player.addItem(item.get());
+                    hiddenItem.setCollected(true);
+                    output.println(String.format("You got a %s.", item.get()));
                 }
+
+            } else {
+                output.println("There is nothing hidden here!");
             }
         }
 

@@ -19,11 +19,10 @@
         },
         "SOUTH" : {
           "@type" : "painting",
-          "key": "brown key"
+          "item": "brown key"
         },
         "WEST" : {
-          "@type" : "mirror",
-          "key": null
+          "@type" : "mirror"
         }
       },
       "lit" : true,
@@ -42,7 +41,16 @@
           "unlocked": true
         },
         "SOUTH": {
-          "@type": "wall"
+          "@type": "chest",
+          "key": "green key",
+          "open": true,
+          "unlocked": true,
+          "gold": 200,
+          "items": [
+            "flashlight",
+            "black key",
+            "yellow key"
+          ]
         },
         "WEST": {
           "@type": "door",
@@ -56,7 +64,7 @@
       "hasLights": true
     }
   ],
-  "time": 3600,
+  "time": 1,
 
   "gold": 550,
   "location": 0,

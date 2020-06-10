@@ -7,13 +7,15 @@ import com.worldnavigator.maze.Player;
 import com.worldnavigator.maze.room.RoomSide;
 import com.worldnavigator.maze.room.Seller;
 
+import java.util.LinkedHashMap;
+
 
 public final class TradeShell extends Shell {
 
     private final Player player;
 
     public TradeShell(Player player, Input input, Output output) {
-        super(input, output, "trade");
+        super(input, output, "trade", new LinkedHashMap<>());
 
         this.player = player;
 

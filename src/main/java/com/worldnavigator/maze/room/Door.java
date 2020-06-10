@@ -8,7 +8,7 @@ import com.worldnavigator.maze.items.Key;
 
 import java.util.Objects;
 
-public class Door extends RoomSide implements Openable {
+public final class Door extends RoomSide implements Openable {
     private final Key key;
     private boolean isOpen;
     private boolean isUnlocked;
@@ -82,7 +82,7 @@ public class Door extends RoomSide implements Openable {
 
     @Override
     @JsonGetter("key")
-    public Item getKey() {
+    public Key getKey() {
         return key;
     }
 

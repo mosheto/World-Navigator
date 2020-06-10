@@ -1,6 +1,7 @@
 package com.worldnavigator.maze.room;
 
 import com.worldnavigator.maze.items.Item;
+import com.worldnavigator.maze.items.Key;
 
 public interface Openable {
 
@@ -14,5 +15,5 @@ public interface Openable {
 
     boolean isUnlocked();
 
-    Item getKey();
+    Key getKey();
 }

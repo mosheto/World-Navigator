@@ -10,7 +10,7 @@ import com.worldnavigator.maze.items.Item;
 
 import java.util.Map;
 
-public class LookCommand implements Command {
+public final class LookCommand implements Command {
 
     private final Player player;
     private final Output output;

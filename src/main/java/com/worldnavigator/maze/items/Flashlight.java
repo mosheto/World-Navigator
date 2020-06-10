@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-public class Flashlight extends Item {
+public final class Flashlight extends Item {
     private boolean isOn;
 
     @JsonCreator
@@ -27,9 +27,9 @@ public class Flashlight extends Item {
     }
 
     /**
+     * Returns the string representation of the flashlight
+     * which is the string "flashlight" as all flashlight are the same.
      *
-     * @return the string "flashlight" as all instances of this class
-     *         are equal.
      */
     @Override
     public String toString() {

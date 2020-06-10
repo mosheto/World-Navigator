@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.worldnavigator.maze.items.Item;
 import com.worldnavigator.maze.items.Key;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Chest extends RoomSide implements Openable {
+public final class Chest extends RoomSide implements Openable {
     private final Key key;
     private boolean isOpen;
     private boolean isUnlocked;
@@ -34,7 +35,7 @@ public class Chest extends RoomSide implements Openable {
         this.isUnlocked = isUnlocked;
 
         this.gold = gold;
-        this.items = items;
+        this.items = Objects.requireNonNull(items);
         this.isCollected = false;
     }
 
@@ -78,7 +79,7 @@ public class Chest extends RoomSide implements Openable {
     }
 
     @Override
-    public Item getKey() {
+    public Key getKey() {
         return key;
     }
 
@@ -91,10 +92,15 @@ public class Chest extends RoomSide implements Openable {
     }
 
     public List<Item> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     public boolean isCollected() {
         return isCollected;
+    }
+
+    @Override
+    public String toString() {
+        return "Chest";
     }
 }

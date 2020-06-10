@@ -1,5 +1,20 @@
 # World Navigator
 
+## Packaging and running 
+
+To get an executable jar file
+
+```
+$ maven package
+```
+
+After that you can run the game using
+
+Giving that the `maze.json` is in the same directory as the jar file.
+```
+$ java -jar world-navigator-0.0.1-jar-with-dependencies.jar maze.json
+```
+
 ## Game Controls
 
 The `maze-filename` argument is a file that describes 
@@ -9,44 +24,41 @@ The file should be in `json` format.
 
 if you want to build your own maze go to [Maze Specification](#maze-specification). 
 
-```shell script
-$ ./nw maze-filename
-Welcome to World Navigator!
-To list the available commands
-and see how to use them type "?list" or "?help <command-name>"
+Atfer stating the game you be in the menu where you can start the game or exit the game.
 
-> 
+```
+Welcome to World Navigator!
+To list the available commands and see how to use them
+Type "list-commands" or "help <command-name>"
+
+menu> list-commands
+Available commands are:
+exit
+help <command-name>
+list-commands
+start
+menu> 
+
 ```
 
-After the game starts you can enter commands to control the player. 
+After starting the game you can control the player to navigate the maze.
 
-Every shell has the `?list` and the `?help <command-name>`
-to see the available commands or get help on a particular command.
-
-```shell script
-> ?list
+```
+menu> start
+> list-commands
 Available commands are:
-?help <command-name>
-?list
-trade
+exit
+help <command-name>
+list-commands
 rotate <left|right>
-status
 move <forward|backward>
-look
-check
-open
+trade
 use <item>
 switch-lights
-reload
-```
-
-```shell script
-> ?help check
-Usage: check
-Checks the thing in front of the player.
-> ?help move
-Usage: move <forward|backward>
-Moves the player between rooms
+check
+look
+open
+status
 > 
 ```
 
@@ -135,7 +147,8 @@ There are for types of a wall
 ```
 {
   "@type" : "painting", // or "mirror" to define a mirror.
-  "key": "brown key"    // The hidden key, or null if there is no key hidden.
+  "item": "brown key"    // The hidden item, if there is no item hidden this proprty can be
+                                                negelected.
 }
 ```
 

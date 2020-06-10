@@ -1,13 +1,13 @@
 package com.worldnavigator.maze.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
-public class Seller extends RoomSide {
+public final class Seller extends RoomSide {
 
     private final Map<String, Integer> prices;
 
@@ -15,7 +15,8 @@ public class Seller extends RoomSide {
     public Seller(
             @JsonProperty("prices") Map<String, Integer> prices
     ) {
-        this.prices = Collections.unmodifiableMap(prices);
+
+        this.prices = Collections.unmodifiableMap(Objects.requireNonNull(prices));
     }
 
     public Integer getItemPrice(String name) {
@@ -27,7 +28,6 @@ public class Seller extends RoomSide {
         visitor.execute(this);
     }
 
-    @JsonGetter("prices")
     public Map<String, Integer> getPrices() {
         return prices;
     }

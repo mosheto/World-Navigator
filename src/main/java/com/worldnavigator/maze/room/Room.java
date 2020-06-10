@@ -3,15 +3,19 @@ package com.worldnavigator.maze.room;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.worldnavigator.maze.Direction;
 
+import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class Room {
+public final class Room {
     private boolean isLit;
     private final boolean hasLights;
 
-    Map<Direction, RoomSide> sides;
+    @JsonDeserialize(as = EnumMap.class)
+    private final Map<Direction, RoomSide> sides;
 
     @JsonCreator
     public Room(
@@ -19,9 +23,9 @@ public class Room {
             @JsonProperty("hasLights") boolean hasLights,
             @JsonProperty("sides") Map<Direction, RoomSide> sides
     ) {
-        this.sides = sides;
         this.isLit = isLit;
         this.hasLights = hasLights;
+        this.sides = Objects.requireNonNull(sides);
     }
 
     public void switchLights() {
@@ -33,18 +37,11 @@ public class Room {
         return this.sides.get(dir);
     }
 
-    @JsonGetter("lit")
     public boolean isLit() {
         return isLit;
     }
 
-    @JsonGetter("hasLights")
     public boolean hasLights() {
         return hasLights;
-    }
-
-    @JsonGetter("sides")
-    public Map<Direction, RoomSide> getSides() {
-        return sides;
     }
 }

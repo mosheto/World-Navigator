@@ -5,6 +5,12 @@ public class ItemFactory {
     private static final ItemFactory factory = new ItemFactory();
     private ItemFactory(){}
 
+    /**
+     *
+     * @param s The description of the item.
+     * @return item instance based on the description
+     * @throws NoSuchItemException if the description can't be converted to an item.
+     */
     public Item valueOf(String s) throws NoSuchItemException {
         s = s.trim().toLowerCase();
 

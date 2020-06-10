@@ -8,7 +8,7 @@ import com.worldnavigator.maze.items.Item;
 import com.worldnavigator.maze.items.ItemFactory;
 import com.worldnavigator.maze.items.NoSuchItemException;
 
-public class BuyCommand implements Command {
+public final class BuyCommand implements Command {
 
     private final Player player;
     private final Output output;

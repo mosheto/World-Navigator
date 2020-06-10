@@ -6,6 +6,7 @@ import com.worldnavigator.maze.room.Room;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Maze {
     private final int time;
@@ -24,12 +25,20 @@ public class Maze {
             @JsonProperty("location") int location,
             @JsonProperty("direction") Direction direction
     ) {
+
         this.time = time;
         this.rooms = rooms;
 
+        if(gold < 0)
+            throw new IllegalArgumentException();
+
         this.gold = gold;
+
+        if(location < 0 || location >= rooms.size())
+            throw new IndexOutOfBoundsException();
+
         this.location = location;
-        this.direction = direction;
+        this.direction = Objects.requireNonNull(direction);
     }
 
     public int getTime() {
@@ -38,6 +47,10 @@ public class Maze {
 
     public Room getRoom(int idx) {
         return rooms.get(idx);
+    }
+
+    public int numberOfRooms() {
+        return rooms.size();
     }
 
     /**

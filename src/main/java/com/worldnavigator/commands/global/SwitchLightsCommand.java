@@ -5,7 +5,7 @@ import com.worldnavigator.commands.Output;
 import com.worldnavigator.maze.Player;
 import com.worldnavigator.maze.room.Room;
 
-public class SwitchLightsCommand implements Command {
+public final class SwitchLightsCommand implements Command {
 
     private final Player player;
 

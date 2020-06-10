@@ -7,7 +7,7 @@ import com.worldnavigator.maze.room.Door;
 import com.worldnavigator.maze.room.Room;
 import com.worldnavigator.maze.room.RoomSide;
 
-public class MoveCommand implements Command {
+public final class MoveCommand implements Command {
 
     private final Player player;
     private final Output output;
@@ -29,7 +29,7 @@ public class MoveCommand implements Command {
         Direction direction = player.getDirection();
 
         if(args[0].equals("backward"))
-            direction = Direction.getReverseDirection(direction);
+            direction = direction.reverse();
 
         RoomSide side = room.getSide(direction);
 

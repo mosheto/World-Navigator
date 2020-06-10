@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class StandardInput implements Input {
+public final class StandardInput implements Input {
 
     private final BufferedReader reader;
 

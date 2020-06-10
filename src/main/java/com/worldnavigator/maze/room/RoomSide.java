@@ -12,7 +12,8 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value = Door.class, name = "door"),
         @JsonSubTypes.Type(value = Mirror.class, name = "mirror"),
         @JsonSubTypes.Type(value = Painting.class, name = "painting"),
-        @JsonSubTypes.Type(value = Seller.class, name = "seller")
+        @JsonSubTypes.Type(value = Seller.class, name = "seller"),
+        @JsonSubTypes.Type(value = Chest.class, name = "chest")
 })
 public abstract class RoomSide {
 

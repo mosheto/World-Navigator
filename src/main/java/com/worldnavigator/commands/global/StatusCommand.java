@@ -4,7 +4,7 @@ import com.worldnavigator.commands.Command;
 import com.worldnavigator.commands.Output;
 import com.worldnavigator.maze.Player;
 
-public class StatusCommand implements Command {
+public final class StatusCommand implements Command {
 
     private final Player player;
     private final Output output;

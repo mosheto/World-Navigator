@@ -5,7 +5,7 @@ import com.worldnavigator.commands.Output;
 import com.worldnavigator.maze.Direction;
 import com.worldnavigator.maze.Player;
 
-public class RotateCommand implements Command {
+public final class RotateCommand implements Command {
 
     private final Player player;
     private final Output output;
@@ -26,11 +26,11 @@ public class RotateCommand implements Command {
         String argument = args[0];
         if(argument.equalsIgnoreCase("left")) {
 
-            Direction direction = Direction.getLeftDirection(player.getDirection());
+            Direction direction = player.getDirection().left();
             player.setDirection(direction);
 
         } else if(argument.equalsIgnoreCase("right")) {
-            Direction direction = Direction.getRightDirection(player.getDirection());
+            Direction direction = player.getDirection().right();
             player.setDirection(direction);
         }
     }

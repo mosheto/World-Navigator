@@ -5,12 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class Key extends Item {
+public final class Key extends Item {
     private final String color;
 
-    @JsonCreator
-    public Key(@JsonProperty("color") String color) {
-        this.color = color;
+    public Key(String color) {
+        this.color = Objects.requireNonNull(color);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class Key extends Item {
 
     /**
      * The string format that this method returns is
-     * "'color' key" where color is substituted by the key color.
+     * "color key" where color is substituted by the key's color.
      *
      * @return string representation of the key.
      */

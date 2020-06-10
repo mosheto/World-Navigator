@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class GameLoader {
 
@@ -16,12 +17,13 @@ public class GameLoader {
     private Path path;
 
     public void setPath(Path path) {
-        this.path = path;
+        this.path = Objects.requireNonNull(path);
     }
 
     public Maze load() throws IOException {
 
         try(BufferedReader reader = Files.newBufferedReader(path)) {
+
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(reader, Maze.class);
         }

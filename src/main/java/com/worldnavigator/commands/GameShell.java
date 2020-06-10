@@ -6,20 +6,17 @@ import com.worldnavigator.maze.Maze;
 import com.worldnavigator.maze.Player;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
-public class GameShell extends Shell {
-
-    private Player player;
+public final class GameShell extends Shell {
 
     public GameShell(Input input, Output output) {
-        super(input, output, "menu");
+        super(input, output, "menu", new LinkedHashMap<>());
 
         addCommands(
-                new Start(),
-                new Continue()
+                new Start()
         );
     }
-
 
     @Override
     public void execute(String... args) {
@@ -50,7 +47,7 @@ public class GameShell extends Shell {
             try {
 
                 Maze maze = GameLoader.getLoader().load();
-                player = maze.player();
+                Player player = maze.player();
 
                 new GlobalShell(
                         player,
@@ -71,35 +68,6 @@ public class GameShell extends Shell {
         @Override
         public String description() {
             return "Start a new game.";
-        }
-    }
-
-    private class Continue implements Command {
-
-        @Override
-        public void execute(String... args) {
-
-            if(player == null || player.isDone()) {
-                output.println("There is no game to continue!");
-
-            } else {
-
-                new GlobalShell(
-                        player,
-                        input,
-                        output
-                ).execute();
-            }
-        }
-
-        @Override
-        public String name() {
-            return "continue";
-        }
-
-        @Override
-        public String description() {
-            return "Continues the current game if the player started one";
         }
     }
 }

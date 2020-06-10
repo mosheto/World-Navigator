@@ -1,13 +1,12 @@
 package com.worldnavigator.commands;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static java.util.stream.Collectors.*;
 
 /**
- * This class acts as a shell like bash shell
- * it has a prompt and can accept commands and execute them
+ * This class acts as a shell like unix shells
+ * it has a prompt and can accept commands
+ * and execute them.
  */
 public abstract class Shell implements Command {
 
@@ -17,17 +16,22 @@ public abstract class Shell implements Command {
     protected final Input input;
     protected final Output output;
 
-    private Map<String, Command> commands;
+    private final Map<String, Command> commands;
 
-    protected boolean done;
+    private boolean done;
 
-    public Shell(Input input, Output output, String prompt) {
-        this.input = input;
-        this.output = output;
-        this.prompt = prompt;
+    public Shell(Input input,
+                 Output output,
+                 String prompt,
+                 Map<String, Command> commands
+    ) {
+
+        this.input = Objects.requireNonNull(input);
+        this.output = Objects.requireNonNull(output);
+        this.prompt = Objects.requireNonNull(prompt);
 
         this.done = false;
-        this.commands = new LinkedHashMap<>();
+        this.commands = Objects.requireNonNull(commands);
 
         addCommands(
                 new Help(),
@@ -45,7 +49,7 @@ public abstract class Shell implements Command {
             Arrays
                 .stream(commands)
                 .collect(
-                    Collectors.toMap(
+                    toMap(
                         Command::name,
                         c -> c
                     )
@@ -96,7 +100,7 @@ public abstract class Shell implements Command {
      *
      * @return true if the shell must stop.
      */
-    protected boolean done() {
+    public boolean done() {
         return done;
     }
 
@@ -159,7 +163,7 @@ public abstract class Shell implements Command {
     private class ListCommands implements Command {
         @Override
         public void execute(String... args) {
-            output.println("Available commands are:\n");
+            output.println("Available commands are:");
             for(Command command : commands.values())
                 output.println(command.usage());
         }
@@ -167,11 +171,6 @@ public abstract class Shell implements Command {
         @Override
         public String name() {
             return "list-commands";
-        }
-
-        @Override
-        public String args() {
-            return "";
         }
 
         @Override

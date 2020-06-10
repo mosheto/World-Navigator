@@ -6,7 +6,7 @@ import com.worldnavigator.maze.Player;
 import com.worldnavigator.maze.room.Seller;
 
 
-public class ListCommand implements Command {
+public final class ListCommand implements Command {
 
     private final Player player;
     private final Output output;

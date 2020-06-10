@@ -9,7 +9,7 @@ import com.worldnavigator.maze.items.*;
 
 import java.util.Map;
 
-public class UseCommand implements Command {
+public final class UseCommand implements Command {
 
     private final Player player;
     private final Output output;
@@ -52,7 +52,7 @@ public class UseCommand implements Command {
         return "Uses the item, for example using a flashlight would it turn on or off.";
     }
 
-    private static class UseVisitor implements ItemVisitor {
+    private static final class UseVisitor implements ItemVisitor {
 
         private final Player player;
         private final Output output;
